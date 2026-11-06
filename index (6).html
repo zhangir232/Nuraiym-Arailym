@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VitaTrack — трекер здоровья</title>
+<style>
+:root{--bg:#f4f7f5;--card:#fff;--ink:#172b25;--muted:#7b8b84;--green:#287a5b;--mint:#dff3e9;--line:#e8efeb;--orange:#f4a261;--blue:#6c9bd2;--shadow:0 12px 35px #183d2b0d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+header{display:flex;align-items:center;justify-content:space-between;padding:22px max(5vw,22px);background:#fff;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:21px;letter-spacing:-.6px}.logo{width:38px;height:38px;border-radius:13px;background:var(--green);display:grid;place-items:center;color:white;font-size:21px}
+.header-right{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:13px}.avatar{width:35px;height:35px;border-radius:50%;background:#e4f2eb;display:grid;place-items:center;color:var(--green);font-weight:800}
+main{max-width:1180px;margin:34px auto;padding:0 22px}.welcome{display:flex;justify-content:space-between;align-items:end;margin-bottom:24px;gap:16px}.welcome h1{font-size:29px;letter-spacing:-1px;margin:0 0 5px}.welcome p{margin:0;color:var(--muted)}.date{background:#fff;border:1px solid var(--line);padding:10px 14px;border-radius:12px;color:#52645c;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:21px;box-shadow:var(--shadow);min-width:0}.metric{grid-column:span 3}.wide{grid-column:span 8}.side{grid-column:span 4}.half{grid-column:span 6}.full{grid-column:span 12}
+.card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}.card h2{font-size:16px;margin:0;letter-spacing:-.25px}.sub{color:var(--muted);font-size:12px}.icon{width:39px;height:39px;border-radius:13px;display:grid;place-items:center;font-size:19px;background:var(--mint)}
+.metric-value{font-size:29px;font-weight:800;letter-spacing:-1px;margin:10px 0 2px}.metric-unit{font-size:13px;color:var(--muted);font-weight:500}.progress{height:8px;background:#edf2ef;border-radius:20px;overflow:hidden;margin:14px 0 8px}.progress span{display:block;height:100%;border-radius:20px;background:var(--green);transition:width .3s}.metric-foot{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}
+.water-row{display:flex;align-items:center;gap:10px;margin-top:14px}.btn{border:0;border-radius:11px;background:var(--green);color:#fff;padding:10px 15px;font-weight:700;cursor:pointer;transition:.2s}.btn:hover{filter:brightness(.94);transform:translateY(-1px)}.btn.light{background:#eaf4ef;color:var(--green)}.btn.small{padding:8px 11px;font-size:12px}.water-count{font-size:25px;font-weight:800}.water-glasses{display:flex;gap:7px;flex-wrap:wrap;margin-top:15px}.glass{width:22px;height:29px;border:2px solid #9ccbb5;border-radius:4px 4px 8px 8px;position:relative;overflow:hidden}.glass.filled{background:#b8e4ce;border-color:#78b995}.glass.filled:after{content:"";position:absolute;left:0;right:0;bottom:0;height:70%;background:#78c39a}
+.chart{height:180px;display:flex;align-items:end;justify-content:space-around;gap:12px;padding:10px 8px 0;border-bottom:1px solid var(--line)}.bar-wrap{height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:8px;flex:1}.bar{width:min(34px,70%);background:#b9dfcc;border-radius:8px 8px 3px 3px;min-height:4px;transition:height .3s}.bar.today{background:var(--green)}.bar-label{font-size:11px;color:var(--muted)}
+.sleep-score{display:flex;align-items:center;gap:18px}.ring{width:104px;height:104px;border-radius:50%;background:conic-gradient(var(--blue) 0 78%,#edf1f4 78% 100%);display:grid;place-items:center;flex:none}.ring:before{content:"";width:78px;height:78px;border-radius:50%;background:white;grid-area:1/1}.ring strong{grid-area:1/1;z-index:1;font-size:20px}.sleep-score p{margin:4px 0;color:var(--muted);font-size:13px}
+.activity-list{display:grid;gap:12px}.activity{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.activity:last-child{border:0}.activity-icon{width:38px;height:38px;border-radius:12px;background:#f0f5f2;display:grid;place-items:center;font-size:18px}.activity-info{flex:1}.activity-info strong{display:block;font-size:13px}.activity-info span{font-size:12px;color:var(--muted)}.activity-time{font-size:12px;color:var(--muted)}
+.form-row{display:flex;gap:10px;flex-wrap:wrap}.field{display:flex;flex-direction:column;gap:5px;flex:1;min-width:120px}.field label{font-size:12px;color:var(--muted)}input,select{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px;background:#fbfdfc;color:var(--ink);font:inherit;outline:none}input:focus,select:focus{border-color:#8bbca3}.mood{display:flex;gap:9px;margin-top:12px}.mood button{border:1px solid var(--line);background:#fff;border-radius:12px;padding:9px 12px;font-size:21px;cursor:pointer}.mood button.active{background:var(--mint);border-color:#8fc6a8}
+.note{font-size:11px;color:var(--muted);margin-top:18px;text-align:center}
+@media(max-width:850px){.metric{grid-column:span 6}.wide,.side,.half{grid-column:span 12}}
+@media(max-width:480px){header{padding:15px 18px}.header-right .date-short{display:none}main{margin:23px auto;padding:0 14px}.welcome{align-items:start;flex-direction:column}.welcome h1{font-size:25px}.metric{grid-column:span 12}.card{padding:17px}.grid{gap:13px}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">✚</div> VitaTrack</div><div class="header-right"><span id="headerDate"></span><div class="avatar">V</div></div></header>
+<main>
+  <section class="welcome"><div><h1>Доброе утро! 👋</h1><p>Следи за привычками и заботься о себе каждый день.</p></div><div class="date" id="todayDate"></div></section>
+  <section class="grid">
+    <article class="card metric"><div class="card-top"><h2>Шаги</h2><div class="icon">👟</div></div><div class="metric-value"><span id="stepsValue">6842</span> <span class="metric-unit">шагов</span></div><div class="progress"><span id="stepsBar" style="width:68%"></span></div><div class="metric-foot"><span>Цель: 10 000</span><strong id="stepsPercent">68%</strong></div></article>
+    <article class="card metric"><div class="card-top"><h2>Вода</h2><div class="icon">💧</div></div><div class="metric-value"><span id="waterValue">5</span> <span class="metric-unit">/ 8 стаканов</span></div><div class="progress"><span id="waterBar" style="width:62.5%"></span></div><div class="metric-foot"><span>Цель на день</span><strong id="waterPercent">63%</strong></div><div class="water-row"><button class="btn small" id="addWater">+ Стакан</button><button class="btn small light" id="removeWater">−</button></div></article>
+    <article class="card metric"><div class="card-top"><h2>Сон</h2><div class="icon">🌙</div></div><div class="metric-value">7.2 <span class="metric-unit">часа</span></div><div class="progress"><span style="width:90%;background:var(--blue)"></span></div><div class="metric-foot"><span>Рекомендация: 8 ч</span><strong>90%</strong></div></article>
+    <article class="card metric"><div class="card-top"><h2>Активность</h2><div class="icon">🔥</div></div><div class="metric-value">320 <span class="metric-unit">ккал</span></div><div class="progress"><span style="width:64%;background:var(--orange)"></span></div><div class="metric-foot"><span>Цель: 500 ккал</span><strong>64%</strong></div></article>
+    <article class="card wide"><div class="card-top"><div><h2>Активность за неделю</h2><div class="sub">Количество шагов по дням</div></div><span class="sub">Эта неделя</span></div><div class="chart" id="stepsChart"></div></article>
+    <article class="card side"><div class="card-top"><h2>Качество сна</h2><div class="icon">🛌</div></div><div class="sleep-score"><div class="ring"><strong>78%</strong></div><div><strong>Хорошо</strong><p>Ты близок к своей цели. Постарайся лечь немного раньше.</p></div></div></article>
+    <article class="card half"><div class="card-top"><div><h2>Последняя активность</h2><div class="sub">Твои сегодняшние занятия</div></div><button class="btn light small" id="clearActivities">Очистить</button></div><div class="activity-list" id="activityList"><div class="activity"><div class="activity-icon">🚶</div><div class="activity-info"><strong>Прогулка</strong><span>25 минут · 120 ккал</span></div><div class="activity-time">08:30</div></div><div class="activity"><div class="activity-icon">🧘</div><div class="activity-info"><strong>Растяжка</strong><span>10 минут · 40 ккал</span></div><div class="activity-time">07:15</div></div></div></article>
+    <article class="card half"><div class="card-top"><div><h2>Добавить активность</h2><div class="sub">Запиши тренировку или прогулку</div></div><div class="icon">＋</div></div><form id="activityForm"><div class="form-row"><div class="field"><label for="activityType">Тип активности</label><select id="activityType"><option value="🚶">Прогулка</option><option value="🏃">Бег</option><option value="🚴">Велосипед</option><option value="🏋️">Тренировка</option><option value="🧘">Йога</option></select></div><div class="field"><label for="duration">Минуты</label><input id="duration" type="number" min="1" max="600" value="20" required></div></div><div style="margin-top:13px"><button class="btn" type="submit">Сохранить активность</button></div></form></article>
+    <article class="card full"><div class="card-top"><div><h2>Как ты себя чувствуешь?</h2><div class="sub">Отметь настроение на сегодня</div></div><div class="icon">💚</div></div><div class="mood" id="moods"><button type="button" title="Отлично">😄</button><button type="button" title="Хорошо">🙂</button><button type="button" title="Нормально">😐</button><button type="button" title="Устал">😴</button><button type="button" title="Грустно">😔</button></div><div class="sub" id="moodMessage" style="margin-top:10px">Выбери смайлик, чтобы записать настроение.</div></article>
+  </section>
+  <p class="note">VitaTrack — демонстрационный трекер. Данные вводятся вручную и сохраняются в этом браузере. Не является медицинским прибором или заменой консультации врача.</p>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const now=new Date();
+$('headerDate').textContent=now.toLocaleDateString('ru-RU',{day:'numeric',month:'long'});
+$('todayDate').textContent=now.toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+let water=Number(localStorage.getItem('vitaWater') ?? 5);
+function renderWater(){water=Math.max(0,Math.min(8,water));$('waterValue').textContent=water;$('waterBar').style.width=(water/8*100)+'%';$('waterPercent').textContent=Math.round(water/8*100)+'%';}
+$('addWater').onclick=()=>{water++;renderWater();localStorage.setItem('vitaWater',water)};
+$('removeWater').onclick=()=>{water--;renderWater();localStorage.setItem('vitaWater',water)};
+renderWater();
+const week=[['Пн',4200],['Вт',6700],['Ср',5100],['Чт',8200],['Пт',6100],['Сб',9300],['Вс',6842]];
+$('stepsChart').innerHTML=week.map((d,i)=>`<div class="bar-wrap"><div class="bar ${i===6?'today':''}" style="height:${d[1]/10000*145}px" title="${d[1].toLocaleString('ru-RU')} шагов"></div><span class="bar-label">${d[0]}</span></div>`).join('');
+let activities=JSON.parse(localStorage.getItem('vitaActivities')||'null')||[
+{icon:'🚶',name:'Прогулка',duration:25,kcal:120,time:'08:30'},
+{icon:'🧘',name:'Растяжка',duration:10,kcal:40,time:'07:15'}];
+function renderActivities(){ $('activityList').innerHTML=activities.length?activities.map(a=>`<div class="activity"><div class="activity-icon">${a.icon}</div><div class="activity-info"><strong>${a.name}</strong><span>${a.duration} минут · ${a.kcal} ккал</span></div><div class="activity-time">${a.time}</div></div>`).join(''):'<div class="sub">Пока нет записей. Добавь свою активность!</div>';localStorage.setItem('vitaActivities',JSON.stringify(activities));}
+$('activityForm').addEventListener('submit',e=>{e.preventDefault();const select=$('activityType'),duration=Number($('duration').value);if(!duration||duration<1)return;const names={'🚶':'Прогулка','🏃':'Бег','🚴':'Велосипед','🏋️':'Тренировка','🧘':'Йога'};const rates={'🚶':4,'🏃':10,'🚴':8,'🏋️':7,'🧘':3};activities.unshift({icon:select.value,name:names[select.value],duration,kcal:Math.round(duration*rates[select.value]),time:new Date().toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})});renderActivities();});
+$('clearActivities').onclick=()=>{activities=[];renderActivities()};
+renderActivities();
+document.querySelectorAll('#moods button').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('#moods button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');$('moodMessage').textContent='Настроение записано: '+btn.title+' '+btn.textContent;localStorage.setItem('vitaMood',btn.textContent)}));
+const savedMood=localStorage.getItem('vitaMood');if(savedMood){const b=[...document.querySelectorAll('#moods button')].find(x=>x.textContent===savedMood);if(b)b.click();}
+</script>
+</body></html>
